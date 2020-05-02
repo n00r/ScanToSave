@@ -1,0 +1,7 @@
+{
+  "name": "ScanToSave",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
