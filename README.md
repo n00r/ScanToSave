@@ -1,4 +1,4 @@
-# ScanToSave 🏩
+# ScanToSave 🛒
 
 Scan QR code to add item in cart and checkout.
 
