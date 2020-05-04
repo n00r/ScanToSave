@@ -19,7 +19,7 @@ const Tab2: React.FC = () => {
           <IonTitle>CART</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent >
         <IonHeader collapse="condense">
           <IonToolbar color="danger">
             <IonTitle size="large">CART</IonTitle>
@@ -30,7 +30,7 @@ const Tab2: React.FC = () => {
           {/* <IonCardHeader>
             <IonCardTitle>Items</IonCardTitle>
           </IonCardHeader> */}
-          <IonCardContent>
+          <IonCardContent class="ion-no-padding">
             {lists.map((item:any) => (
               <IonItem>
                 <IonThumbnail slot="start">
@@ -77,7 +77,7 @@ const Tab2: React.FC = () => {
                 </IonToolbar>
               </IonCol>
               <IonCol className="ion-no-padding" color="" >
-                <IonToolbar color="success"> <IonTitle class="f16">PROCEED TO CHECKOUT <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon></IonTitle></IonToolbar>
+                <IonToolbar color="success"> <IonTitle class="f16">CHECKOUT <IonIcon slot="end" icon={arrowForwardOutline}></IonIcon></IonTitle></IonToolbar>
 
               </IonCol>
             </IonRow>
