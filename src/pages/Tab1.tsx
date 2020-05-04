@@ -37,26 +37,27 @@ const Tab1: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Scan To Save</IonTitle>
+        <IonToolbar  color="danger">
+          <IonTitle>SCAN TO SAVE</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Scan To Save</IonTitle>
+          <IonToolbar color="danger">
+            <IonTitle size="large">SCAN TO SAVE</IonTitle>
           </IonToolbar>
         </IonHeader>
         {/* <ExploreContainer name="Tab 1 page" /> */}
 
-        <IonCard>
-        <img src="https://www.metromarket.net/content/v2/binary/image/info/scan-bag-go/dig11700_wts_sbg_krogerpay_espot-mobile-1586953953679.png" />
+        <IonCard class="tac">
+        <img src="assets/scan1.jpeg" />
         <IonCardHeader>
-          {/* <IonCardSubtitle>Destination</IonCardSubtitle> */}
-          {/* <IonCardTitle>Scan To Save</IonCardTitle> */}
+          <IonCardTitle>Scans the QR Code with the touch of a scan button</IonCardTitle>
+          <IonCardSubtitle>Significantly reduces shopping times.</IonCardSubtitle>
+
         </IonCardHeader>
         <IonCardContent>
-        <IonButton onClick={openScanner} expand="block" shape="round" size="large">Scan Qrcode</IonButton>
+        <IonButton onClick={openScanner} expand="block" shape="round" size="large">Scan QR</IonButton>
 
         </IonCardContent>
       </IonCard>

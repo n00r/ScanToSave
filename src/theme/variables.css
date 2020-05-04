@@ -44,7 +44,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-warning-tint: #ffca22;
 
   /** danger **/
-  --ion-color-danger: #eb445a;
+  --ion-color-danger: #e11a2b;
   --ion-color-danger-rgb: 235, 68, 90;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255, 255, 255;
@@ -216,3 +216,41 @@ http://ionicframework.com/docs/theming/ */
     --ion-tab-bar-background: #1f1f1f;
   }
 } */
+
+/* 
+@media (min-width: 992px) {
+  ion-navbar, ion-header, ion-footer, ion-toolbar, app-tab2, app-tab3, app-tab4, app-details {
+    margin: 0 !important;
+    padding-right: calc((100% - 992px) / 2) !important;
+    padding-left: calc((100% - 992px) / 2) !important;
+ }
+} */
+
+.tab-selected{
+  background-color: #e2e2e2;
+  color:#e11a2b;
+  /* font-size: 16px; */
+}
+.tac{
+  text-align: center;
+}
+.ms1{
+  position: absolute;
+  top: 3px;
+}
+.ms2{
+  font-size: 26px; color: grey; top: 7px; position: relative;
+}
+.ms3{
+  top: -11px; position: relative;
+}
+.f16{
+  font-size: 16px;
+}
+.fc14{
+  font-size: 14px;
+  color: #5d8ed5;
+}
+.cred{
+  color: #e11a2b !important;
+}

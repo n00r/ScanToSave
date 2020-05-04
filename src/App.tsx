@@ -7,10 +7,11 @@ import {
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonTabs
+  IonTabs,
+  IonBadge
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle,homeOutline,cartOutline } from 'ionicons/icons';
+import { ellipse, square, triangle,homeOutline,cartOutline, scanOutline, barcodeOutline, qrCodeOutline } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -46,12 +47,14 @@ const App: React.FC = () => (
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
+            <IonIcon icon={qrCodeOutline} />
+            <IonLabel>SCAN</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={cartOutline} />
-            <IonLabel>Cart</IonLabel>
+            <IonLabel>CART     
+              <IonBadge class="ms1" color="danger">4</IonBadge>
+            </IonLabel>
           </IonTabButton>
           {/* <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={square} />
