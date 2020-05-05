@@ -247,6 +247,9 @@ http://ionicframework.com/docs/theming/ */
 .f16{
   font-size: 16px;
 }
+.f20{
+  font-size: 20px;
+}
 .fc14{
   font-size: 14px;
   color: #5d8ed5;
