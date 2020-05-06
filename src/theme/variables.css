@@ -247,8 +247,13 @@ http://ionicframework.com/docs/theming/ */
 .f16{
   font-size: 16px;
 }
-.f20{
-  font-size: 20px;
+
+.f58{
+  font-size: 58px;
+}
+.f13{
+  font-size: 13px;
+
 }
 .fc14{
   font-size: 14px;
@@ -256,4 +261,66 @@ http://ionicframework.com/docs/theming/ */
 }
 .cred{
   color: #e11a2b !important;
+}
+.login-logo {
+  padding: 20px 0;
+  min-height: 110px;
+  text-align: center;
+}
+
+.login-logo IonIcon {
+  max-width: 150px;
+}
+.divider{
+  height: 12px;
+  /* margin: 0 -16px 20px; */
+  background-color: #f4f4f5;
+}
+.p16{
+  padding-bottom: 16px;
+}
+.tar{
+  text-align: right;
+}
+.tal{
+  text-align: left;
+}
+.checkp p {
+  margin: 0;
+}
+.f15{
+  font-size: 15px;
+}
+.f18{
+  font-size: 18px;
+}
+.fw400{
+  font-weight: 400;
+}
+.fw500{
+  font-weight: 500;
+}
+.fw600{
+  font-weight: 600;
+}
+.fwb{
+  font-weight: bold;
+}
+.line{
+  margin: 13px 0 10px;
+  height: 1px;
+  display: block;
+  background: #e3e3ea;
+}
+.glab{
+  color: #60b246;
+}
+.pb4{
+padding-bottom: 4px;
+}
+.pt12{
+  padding:  12px 0px 0px 12px ;
+}
+.f20{
+  font-size: 20px;
 }
