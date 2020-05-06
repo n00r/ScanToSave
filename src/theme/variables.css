@@ -254,3 +254,23 @@ http://ionicframework.com/docs/theming/ */
 .cred{
   color: #e11a2b !important;
 }
+
+.img-size{
+  height: 350px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
+.card-effect{
+  box-shadow: none;
+  border: 1px solid #dcdcdc;
+  padding: 20px;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.label {
+  color: #000000;
+}
