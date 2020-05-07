@@ -15,6 +15,7 @@ import { cartOutline, qrCodeOutline } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
+import Tab4 from './pages/Tab4';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -35,6 +36,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
@@ -43,6 +45,7 @@ const App: React.FC = () => (
           <Route path="/scan" component={Tab1} exact={true} />
           <Route path="/cart" component={Tab2} exact={true} />
           <Route path="/tab3" component={Tab3} />
+          <Route path="/tab4" component={Tab4} />
           <Route path="/" render={() => <Redirect to="/scan" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
