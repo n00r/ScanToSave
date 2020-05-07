@@ -7,9 +7,10 @@ import { arrowBack, lockOpenOutline } from 'ionicons/icons';
 interface ContainerProps {
     CustomerModal: any;
     onhandlecustomer: any;
+    onback: any;
 }
 
-const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecustomer }) => {
+const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecustomer,onback }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
   
@@ -37,7 +38,7 @@ const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecus
     <IonHeader>
       <IonToolbar>
         <IonButtons slot="start">
-          <IonButton onClick={() => onhandlecustomer(false)}>
+          <IonButton onClick={() => onback(false)}>
             <IonIcon icon={arrowBack}></IonIcon>
           </IonButton>
         </IonButtons>

@@ -7,9 +7,10 @@ import { arrowBack, arrowForward, chevronForwardOutline, giftOutline, checkmarkC
 interface ContainerProps {
     CheckoutModal: any;
     onhandlecheckout: any;
+    onback: any;
 }
 
-const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlecheckout }) => {
+const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlecheckout ,onback }) => {
     const [shippingAddress, setshippingAddress] = useState('');
     const [zipcode, setzipcode] = useState('');
     const [phone, setPhone] = useState('');
@@ -21,6 +22,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
 
     const [zipcodeError, setzipcodeError] = useState(false);
     const onsubmit = async (e: React.FormEvent) => {
+        onhandlecheckout()
         e.preventDefault();
         setFormSubmitted(true);
         if (!shippingAddress) {
@@ -44,7 +46,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonButton onClick={() => onhandlecheckout(false)}>
+                        <IonButton onClick={() => onback(false)}>
                             <IonIcon icon={arrowBack}></IonIcon>
                         </IonButton>
                     </IonButtons>
