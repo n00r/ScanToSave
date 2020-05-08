@@ -274,10 +274,10 @@ http://ionicframework.com/docs/theming/ */
 
 .card-effect{
   box-shadow: none;
-  border: 1px solid #dcdcdc;
-  padding: 20px;
-  margin-left: 1em;
-  margin-right: 1em;
+  padding: 2px;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  /* margin-top: 0em; */
 }
 
 .label {

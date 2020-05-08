@@ -1,24 +1,33 @@
-import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonItem, IonThumbnail, IonLabel, IonImg, IonFooter, IonText, IonCardHeader, IonButton, IonFabButton, IonGrid, IonRow, IonCol, IonIcon, IonSlides, IonSlide } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonImg, IonFooter, IonText, IonCardHeader, IonButton, IonFabButton, IonGrid, IonRow, IonCol, IonIcon, IonSlides, IonSlide, IonSpinner } from '@ionic/react';
 import './Tab4.css';
 import { removeCircleOutline, addCircleOutline, arrowForwardOutline } from 'ionicons/icons';
+import api from '../service/api';
 
-const item: any = {
-    "name": "MICHAEL Michael Kors Moto jacket Leather", "price": "$190.00", "color": "Brown", "size": "XS", "img": "assets/cart/3.jpeg", "quantity": "1", "desc": "The timeless bomber jacket gets a modern update in lightweight scuba nylon. A tonal rubberized logo and glossed trim lend sporty appeal, while zipped pockets along the side and long sleeve offer a functional finish.",
-    "category": "Men", "brand": "MICHAEL Michael Kors", "type": "Formal", "others": " Dry clean by leather professional"
-};
-
+const productId: string = "PA1"
 const Tab4: React.FC = () => {
+    const [product, setProduct] = useState<any>({});
+    const fetchProduct = () => {
+        api.getProduct(productId).then((response) => {
+            if (response && response.data) {
+                console.log(response.data);
+                setProduct(response.data);
+            }
+        })
+    };
+    useEffect(() => {
+        fetchProduct();
+    }, [])
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar color="danger">
-                    <IonTitle>{item.name}</IonTitle>
+                    <IonTitle>{product.productName}</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent>
                 <IonCard class="card-effect">
-                    <IonImg src={item.img} class="img-size" />
+                    <IonImg src={product.imageURL} class="img-size" />
                     {/* <IonSlides pager>
                         <IonSlide >
                         <IonImg src={item.img} class="img-size" />
@@ -31,20 +40,20 @@ const Tab4: React.FC = () => {
                         </IonSlide>
                     </IonSlides> */}
                     <div className="ion-text-center f16">
-                        {item.name}
+                        {product.productName}
                     </div>
                     <div className="ion-text-center f16 cred">Price:
-                        {item.price}
+                        {product.productPrice}
                     </div>
-                    {/* <IonText class="ion-text-wrap">{item.desc}</IonText> */}
                 </IonCard>
                 <IonCard class="card-effect">
                     <IonCardHeader>
-                        <b className="f16 label">Color:</b>  {item.color}
+                        <b className="f16 label">Color:</b>
+                        <span> {product.productColor} </span>
                     </IonCardHeader>
-                    <IonCardContent>
-                        <IonFabButton size="small" color="danger"></IonFabButton>
-                    </IonCardContent>
+                    {/* <IonCardContent>
+                        <IonFabButton size="small" color={product.productColor}></IonFabButton>
+                    </IonCardContent> */}
                 </IonCard>
                 <IonCard class="card-effect">
                     <IonCardHeader>
@@ -58,30 +67,25 @@ const Tab4: React.FC = () => {
                 </IonCard>
                 <IonCard class="card-effect">
                     <IonCardHeader>
-                        <b className="f16 label">Delivery By:</b><IonText> Fri May 8</IonText>
+                        <b className="f16 label">Promotion Details: </b><IonText>{product.promotionDetails}</IonText>
                     </IonCardHeader>
                 </IonCard>
                 <IonCard class="card-effect">
                     <IonCardHeader>
                         <b className="f16 label">Specification:</b>
                     </IonCardHeader>
-                    <IonCardContent>{item.specifications}</IonCardContent>
                     <IonGrid>
                         <IonRow>
                             <IonCol class="label">• Category: </IonCol>
-                            <IonCol>{item.category} </IonCol>
+                            <IonCol>{product.productCategory} </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol class="label">• Brand: </IonCol>
-                            <IonCol>{item.brand} </IonCol>
+                            <IonCol class="label">• Size: </IonCol>
+                            <IonCol>{product.productSize} </IonCol>
                         </IonRow>
                         <IonRow>
                             <IonCol class="label">• Type: </IonCol>
-                            <IonCol>{item.type} </IonCol>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol class="label">• Others: </IonCol>
-                            <IonCol>{item.others} </IonCol>
+                            <IonCol>{product.productType} </IonCol>
                         </IonRow>
                     </IonGrid>
                 </IonCard>
@@ -90,7 +94,7 @@ const Tab4: React.FC = () => {
                         <b className="f16 label">Description:</b>
                     </IonCardHeader>
                     <IonCardContent>
-                        {item.desc}
+                        {product.productDescription}
                     </IonCardContent>
                 </IonCard>
             </IonContent>
@@ -110,6 +114,7 @@ const Tab4: React.FC = () => {
                     </IonGrid>
                 </IonToolbar>
             </IonFooter>
+
         </IonPage>
     );
 };
