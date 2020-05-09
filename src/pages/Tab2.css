@@ -1,0 +1,21 @@
+.fp1{
+    position: absolute;
+    right: 10px;
+    top:5px
+}
+.fp2{
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+}
+/* @media only screen and (min-height: 600px) and (min-width: 768px){
+ion-modal {
+    width:  100% !important;
+    height: 100% !important;
+}
+} */
+.modal-wrapper {
+    --height: 100%;
+    --width: 1000%;
+     
+ }

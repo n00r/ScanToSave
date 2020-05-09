@@ -1,0 +1,15 @@
+{
+    "products": {
+        "productId": "PA3",
+        "productName": "Shirt",
+        "productType": "Formal",
+        "productBrand": "Allen Solly",
+        "productDescription": "Men's wear",
+        "productPrice": 500.0,
+        "productSize": 40,
+        "productCategory": "Men",
+        "productColor": "Black",
+        "imageURL": "https://rukminim1.flixcart.com/image/714/857/jhjg13k0/shirt/h/j/j/m-hlsh008841-black-highlander-original-imaf5g63rgnfvz4t.jpeg?q=50",
+        "promotionDetails": "Null"
+    }
+}

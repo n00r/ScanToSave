@@ -2,11 +2,12 @@ import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCardContent, IonItem, IonThumbnail, IonLabel, IonIcon, IonCard, IonCardHeader, IonFooter, IonGrid, IonRow, IonCol, IonText } from '@ionic/react';
 import './Tab3.css';
 import { removeCircleOutline, addCircleOutline, arrowForwardOutline } from 'ionicons/icons';
+import {environment} from '../services/env';
 
 const lists: any = [
-  { "name": "MICHAEL Michael Kors", "price": "$190.00", "color": "Eggplant", "size": "XS","img":"assets/cart/3.jpeg", "quantity": "1" },
-  { "name": "Puma Men's Essential Logo Hoodie", "price": "$45.00", "color": "Black", "size": "S" ,"img":"assets/cart/4.jpeg", "quantity": "1" },
-  { "name": "MICHAEL Michael Kors Mae Medium Tote", "price": "$278.00", "color": "Bright Red/Gold", "size": "S" ,"img":"assets/cart/2.jpeg", "quantity": "3" },
+  { "name": "MICHAEL Michael Kors", "price": "190.00", "color": "Eggplant", "size": "XS","img":"assets/cart/3.jpeg", "quantity": "1" },
+  { "name": "Puma Men's Essential Logo Hoodie", "price": "45.00", "color": "Black", "size": "S" ,"img":"assets/cart/4.jpeg", "quantity": "1" },
+  { "name": "MICHAEL Michael Kors Mae Medium Tote", "price": "278.00", "color": "Bright Red/Gold", "size": "S" ,"img":"assets/cart/2.jpeg", "quantity": "3" },
 ];
 
 const Tab3: React.FC = () => {
@@ -54,7 +55,7 @@ const Tab3: React.FC = () => {
                 </IonThumbnail>
                 <IonLabel>
                   <h3><b>{item.name}</b></h3>
-                  <p className="cred"> <b>{item.price}</b></p>
+                  <p className="cred"> <b>{environment.currency}{item.price}</b></p>
                   <p>  Color: {item.color}  | Size: {item.size} </p>
                   <p>  Quantity: {item.quantity} </p>
                 </IonLabel>
@@ -64,7 +65,7 @@ const Tab3: React.FC = () => {
           <IonFooter>
             <IonToolbar color="danger">
               <IonTitle size="large">
-                <IonText  class="ion-float-left">Total Price: $538.00</IonText>
+                <IonText  class="ion-float-left">Total Price: {environment.currency}538</IonText>
               </IonTitle>
             </IonToolbar>
           </IonFooter>

@@ -1,6 +1,7 @@
 import React ,{ useState } from 'react';
-import { IonContent, IonHeader,  IonTitle, IonToolbar, IonItem, IonLabel, IonIcon,  IonRow, IonCol, IonModal, IonButton, IonInput, IonText, IonList, IonButtons } from '@ionic/react';
+import { IonContent, IonHeader,  IonTitle, IonToolbar, IonItem, IonLabel, IonIcon,  IonRow, IonCol, IonModal, IonButton, IonInput, IonText, IonList, IonButtons, IonLoading } from '@ionic/react';
 import { arrowBack, lockOpenOutline } from 'ionicons/icons';
+import { postLogin } from '../services/api';
 
 // import './ExploreContainer.css';
 
@@ -18,6 +19,8 @@ const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecus
     const [usernameError, setUsernameError] = useState(false);
   
     const [passwordError, setPasswordError] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const login = async (e: React.FormEvent) => {
         e.preventDefault();
         setFormSubmitted(true);
@@ -31,6 +34,17 @@ const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecus
           // await setIsLoggedIn(true);
           // await setUsernameAction(username);
           // history.push('/tabs/schedule', {direction: 'none'});
+          setLoading(true);
+          postLogin({username,password}).then((response :any) => {
+            if (response) {
+              console.log(response);
+              onhandlecustomer(response)
+              // setProduct(response.products);
+             
+            }
+          }).finally(() => {
+            setLoading(false);
+          });
         }
       };
   return (
@@ -87,11 +101,15 @@ const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecus
 
         <IonRow>
           <IonCol>
-            <IonButton type="submit" expand="block" color="danger" onClick={() => onhandlecustomer({"username":username})}>Sign In & Checkout</IonButton>
+            <IonButton type="submit" expand="block" color="danger" onClick={() => login}>Sign In & Checkout</IonButton>
           </IonCol>
         </IonRow>
       </form>
-
+      <IonLoading
+        isOpen={loading}
+        onDidDismiss={() => setLoading(false)}
+        message={'Login...'}
+      />
     </IonContent>
   </IonModal>
   );
