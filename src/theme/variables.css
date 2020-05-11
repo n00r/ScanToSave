@@ -335,7 +335,7 @@ http://ionicframework.com/docs/theming/ */
   background: #e3e3ea;
 }
 .glab{
-  color: #60b246;
+  color: #60b246 !important;
 }
 .pb4{
 padding-bottom: 4px;
@@ -349,4 +349,7 @@ padding-bottom: 4px;
 .f65{
   font-size: 65px;
 }
-
+.mlf{
+  text-decoration: line-through;
+  color: grey;
+}

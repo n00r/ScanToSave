@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { IonContent, IonHeader, IonAlert, IonPage, IonTitle, IonToolbar, IonFooter, IonGrid, IonRow, IonCol, useIonViewWillEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonAlert, IonPage, IonTitle, IonToolbar, IonFooter, IonGrid, IonRow, IonCol, useIonViewWillEnter, IonIcon } from '@ionic/react';
 import './Tab2.css';
 import CustomerComponent from '../components/CustomerComponent';
 import CartComponent from '../components/CartComponent';
@@ -7,25 +7,37 @@ import CheckoutComponent from '../components/CheckoutComponent';
 import OrderConfirmationComponent from '../components/OrderConfirmationComponent';
 import * as Cart from '../services/cart';
 import {environment} from '../services/env';
+import { cartOutline } from 'ionicons/icons';
+import { RouteComponentProps } from 'react-router';
+interface OwnProps extends RouteComponentProps {
+  // handlecount:any
+}
 
 
 
-const Tab2: React.FC = () => {
+const Tab2: React.FC<OwnProps> = ({history}) => {
   useIonViewWillEnter(() => {
     Cart.getTotalItems().then((data: any) => {
       SetTotalItems(data);
+      if(data != 0){
+        setisAvail(true);
+       }
+      if(data == 0){
+        setisAvail(false);
+       }
       
     });
     Cart.getTotal().then((data: any) => {
       SetTotalAmount(data);
       
     });
-    // setShowcheckoutModal(true);
+    // setShowOrderModal(true);
 
   });
  
   let [user, setuser] = useState('Guest');
   let [order, setorder] = useState(false);
+  let [isAvail, setisAvail] = useState(false);
   let [lists, setlists] = useState();
   let [totalItems, SetTotalItems] = useState();
   let [totalAmount, SetTotalAmount] = useState();
@@ -49,10 +61,11 @@ const Tab2: React.FC = () => {
     setorder(res);
     setShowOrderModal(true);
 
+
   }, []);
   const handleorders = useCallback((res) => {
     setorder(false);
-
+    history.push('/scan');
     setShowOrderModal(false);
   }, []);
   const handleback = useCallback(() => {
@@ -61,9 +74,18 @@ const Tab2: React.FC = () => {
     setShowOrderModal(false);
   }, []);
   const handlecart = useCallback(() => {
+    // handlecount('1')
+    // console.log(handlecount)
+    // handlecount('1')
     Cart.getCart().then((data) => {
       Cart.getTotalItems().then((data: any) => {
          SetTotalItems(data);
+         if(data != 0){
+          setisAvail(true);
+         }
+         if(data == 0){
+          setisAvail(false);
+         }
          });
     });
     Cart.getTotal().then((data: any) => {
@@ -77,6 +99,13 @@ const Tab2: React.FC = () => {
     Cart.getCart().then((data) => {
       setlists(data);
     });
+
+  }
+  const checkout = () =>{
+    if(totalItems != 0){
+      setShowAlert(true)
+
+    }
 
   }
   useEffect(() => {
@@ -132,8 +161,15 @@ const Tab2: React.FC = () => {
         <OrderConfirmationComponent orderModal={showOrderModal} onhandleorderout={handleorders} onback={handleback} handleorder={order} />
 
         )}
-
+    {!isAvail && (
+    <div className="container" >
+      <IonIcon icon={cartOutline} className="f45"></IonIcon>
+      <h3>Scan some items</h3>
+      <p>Currently, No items in your cart </p>
+    </div>
+    )}
       </IonContent>
+      {isAvail && (
       <IonFooter>
         <IonToolbar>
           <IonGrid className="ion-no-padding">
@@ -144,13 +180,14 @@ const Tab2: React.FC = () => {
                   <IonTitle class="fc14"> {totalItems} items </IonTitle>
                 </IonToolbar>
               </IonCol>
-              <IonCol className="ion-no-padding" color="" onClick={() => setShowAlert(true)}>
+              <IonCol className="ion-no-padding" color="" onClick={() => checkout()}>
                 <IonToolbar color="success"> <IonTitle class="f16">CHECKOUT</IonTitle></IonToolbar>
               </IonCol>
             </IonRow>
           </IonGrid>
         </IonToolbar>
       </IonFooter>
+        )}
     </IonPage>
   );
 };

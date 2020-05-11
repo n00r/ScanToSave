@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useIonViewWillEnter, IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonIcon, IonFooter, IonGrid, IonRow, IonCol, IonModal, IonButton, IonInput, IonText, IonList, IonButtons, IonSelect, IonSelectOption, IonThumbnail, IonLoading } from '@ionic/react';
-import { arrowBack, arrowForward, chevronForwardOutline, giftOutline, checkmarkCircle, cardOutline } from 'ionicons/icons';
+import {  IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonIcon, IonFooter, IonGrid, IonRow, IonCol, IonModal, IonButton, IonInput, IonText, IonList, IonButtons, IonSelect, IonSelectOption, IonThumbnail, IonLoading, IonChip } from '@ionic/react';
+import { arrowBack, checkmarkCircle, cardOutline } from 'ionicons/icons';
 import * as Cart from '../services/cart';
 import { postOrder } from '../services/api';
-import {environment} from '../services/env';
+import { environment } from '../services/env';
+import { RouteComponentProps } from 'react-router';
 
 // import './ExploreContainer.css';
 
@@ -11,7 +12,7 @@ interface ContainerProps {
     CheckoutModal: any;
     onhandlecheckout: any;
     onback: any;
-    handleuser: any;
+    handleuser: any
 }
 
 const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlecheckout, onback, handleuser }) => {
@@ -54,6 +55,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
         Cart.getCart().then((data) => {
             // setCartItems();
             cartItems = data;
+
         })
 
     }
@@ -65,8 +67,8 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             setshippingAddressError(true);
         }
         if (!name) {
-            if(!handleuser.Name){
-            setNameError(true);
+            if (!handleuser.Name) {
+                setNameError(true);
 
             }
         }
@@ -77,33 +79,60 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             setPhoneError(true);
 
         }
+        // let data = {
+        //     "cart": cartItems,
+        //     "totalAmount": totalAmount,
+        //     "address": {
+        //         "name": name || handleuser.Name,
+        //         "shippingAddress": shippingAddress,
+        //         "zipcode": zipcode,
+        //         "phone": phone,
+        //         "state": state,
+        //     },
+
+
+        // };
+        let items: any = cartItems;
+        let carts: any = [];
+        items.map((c: any) => {
+            let price = ""
+            if (c.offerPrice != 0 && c.offerPrice != null) {
+                price = c.offerPrice
+            }
+            else {
+                price = c.productPrice
+            }
+            let item = { productId: c.product_Id, productPrice: price, productQuantity: c.qty }
+            carts.push(item);
+
+        })
+
         let data = {
-            "cart": cartItems,
+            "address": shippingAddress,
+            "city": "city",
+            "country": "country",
+            "fullName": name || handleuser.Name,
+            // "orderId": 0 || Math.floor(Math.random() * 1000) + 1,
+            "phoneNumber": phone,
+            "shipProducts": carts,
+            "state": state,
             "totalAmount": totalAmount,
-            "address": {
-                "name": name || handleuser.Name,
-                "shippingAddress": shippingAddress,
-                "zipcode": zipcode,
-                "phone": phone,
-                "state": state,
-            },
-
-
+            "zipCode": zipcode
         }
-        if (data.address.name && data.address.shippingAddress && data.address.zipcode) {
+        if (data.fullName && data.address && data.zipCode) {
             // await setIsLoggedIn(true);
             // await setUsernameAction(username);
             // history.push('/tabs/schedule', {direction: 'none'});
             setLoading(true);
-            
+
             postOrder(data).then((response: any) => {
                 if (response) {
                     console.log(response);
-                    Cart.clearCart();
-                    Cart.getCart().then((data) => {
-                        // setCartItems();
-                        cartItems = data;
-                    })
+                    // Cart.clearCart();
+                    // Cart.getCart().then((data) => {
+                    //     // setCartItems();
+                    //     cartItems = data;
+                    // })
                     onhandlecheckout(response)
                     // setProduct(response.products);
 
@@ -193,7 +222,17 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
 
                 <div className="divider"></div>
                 <form noValidate onSubmit={onsubmit} >
-                    <IonTitle className="f18 pt12">Shipping Address</IonTitle>
+                    <IonTitle className="f18 pt12">Shipping Address
+                    <IonChip color="danger">
+                            {(handleuser != 'Guest') &&
+                                <IonLabel color="" className="cred">As User</IonLabel>
+                            }
+                            {(handleuser == 'Guest') &&
+                                <IonLabel color="" className="cred">As Guest</IonLabel>
+                            }
+                        </IonChip>
+                    </IonTitle>
+
 
                     <IonList>
                         {(handleuser == 'Guest') && <IonItem>

@@ -2,6 +2,7 @@
 
 Scan QR code to add item in cart and checkout.
 
+
 Using [Ionic](https://ionicframework.com/docs) and [React](https://reactjs.org/) Framework.
 
 
@@ -35,4 +36,7 @@ npm run build
 
 **NOTE:** Do revert me with creating issues or creating pull request.
 
+## sample QR 
+
+# <img src="public/assets/qrcode.png" title="qr" alt="qr" width="250" height="250">
 

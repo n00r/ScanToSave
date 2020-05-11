@@ -21,8 +21,8 @@ export const addToCart = async (product :any): Promise<void> => {
     }
 
     const copyOfcarts = carts.slice();
-    const { productId } = product;
-    const isSavedIndex = copyOfcarts.findIndex((c:any) => c.productId === productId);
+    const { product_Id } = product;
+    const isSavedIndex = copyOfcarts.findIndex((c:any) => c.product_Id === product_Id);
 
     if (isSavedIndex !== -1) {
         return ;
@@ -44,8 +44,8 @@ export const setQuantity = async (product :any): Promise<void> => {
         ? JSON.parse(saved.value)
         : null;
     const copyOfcarts = carts.slice();
-    const { productId } = product;
-    const isSavedIndex =  copyOfcarts.findIndex((c:any) => c.productId === productId);
+    const { product_Id } = product;
+    const isSavedIndex =  copyOfcarts.findIndex((c:any) => c.product_Id === product_Id);
     if (isSavedIndex !== -1) {
         copyOfcarts[isSavedIndex]=product
         await Storage.set({
@@ -74,8 +74,8 @@ export const removeCart = async (product :any): Promise<void> => {
         ? JSON.parse(saved.value)
         : null;
     const copyOfcarts = carts.slice();
-    const { productId } = product;
-    const isSavedIndex =  copyOfcarts.findIndex((c:any) => c.productId === productId);
+    const { product_Id } = product;
+    const isSavedIndex =  copyOfcarts.findIndex((c:any) => c.product_Id === product_Id);
     if (isSavedIndex !== -1) {
         // copyOfcarts[isSavedIndex]=product
         copyOfcarts.splice(isSavedIndex, 1);
@@ -99,7 +99,7 @@ export const getCart = async (): Promise<any | null> => {
         : null;
 };
 
-export const checkCart = async (productId: any): Promise<boolean> => {
+export const checkCart = async (product_Id: any): Promise<boolean> => {
     const saved = await Storage.get({
         key: 'savedCart',
     });
@@ -108,7 +108,7 @@ export const checkCart = async (productId: any): Promise<boolean> => {
         : null;
 
     if (carts) {
-        const isSavedIndex = carts.findIndex((c:any) => c.productId === productId);
+        const isSavedIndex = carts.findIndex((c:any) => c.product_Id === product_Id);
         if (isSavedIndex !== -1) {
             return true;
         }
@@ -133,7 +133,7 @@ export const getTotalItems = async () => {
     return count;
 };
 export const getTotal = async () => {
-    var total = 0;
+    var total : any= 0;
     const saved = await Storage.get({
         key: 'savedCart',
     });
@@ -143,11 +143,18 @@ export const getTotal = async () => {
 
     if(carts){
         carts.map((item : any) =>{
-            total += item.productPrice *item.qty 
+            if(item.offerPrice != 0 && item.offerPrice != null){
+
+            total += item.offerPrice *item.qty 
+        }
+            else{
+                total += item.productPrice *item.qty 
+
+            }
         }
         );
     }
     
     
-    return total;
+    return parseFloat(total).toFixed(2);
 };

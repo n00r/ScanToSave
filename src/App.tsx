@@ -56,7 +56,7 @@ const App: React.FC = () => (
           <IonTabButton tab="cart" href="/cart">
             <IonIcon icon={cartOutline} />
             <IonLabel>CART     
-              <IonBadge class="ms1" color="danger">4</IonBadge>
+              {/* <IonBadge class="ms1" color="danger">4</IonBadge> */}
             </IonLabel>
           </IonTabButton>
           {/* <IonTabButton tab="tab3" href="/tab3">

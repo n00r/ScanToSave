@@ -35,7 +35,7 @@ const CustomerComponent: React.FC<ContainerProps> = ({ CustomerModal,onhandlecus
           // await setUsernameAction(username);
           // history.push('/tabs/schedule', {direction: 'none'});
           setLoading(true);
-          postLogin({username,password}).then((response :any) => {
+          postLogin({userId:username,password}).then((response :any) => {
             if (response) {
               console.log(response);
               onhandlecustomer(response)

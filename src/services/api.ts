@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://35.225.53.57:8080/api/',
+    baseURL: 'http://35.225.53.57:8443/',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -13,20 +13,24 @@ api.interceptors.response.use((response) => {
     }
 });
 
-export function getProduct(ProductId:any) {
-    return api.get('getProduct/'+ProductId, {
+export function getProduct(productId: any, promoId: any = null) {
+    return api.get('api/getPromoProducts/product/promo', {
         params: {
-            limit: 10,
-            hasStackAvail: true,
+            productId,
+            promoId,
         },
     });
 }
-export function postLogin(userData : any) {
-    return api.get('/loginUser.json', userData);
+export function postLogin(userData: any) {
+    return api.post('api/authenticate', userData);
 }
-export function postOrder(orderData : any) {
-    return api.get('/orderData.json', orderData);
+export function postOrder(orderData: any) {
+    return api.post('/placeOrder', orderData);
 }
-export function getOrder(OrderId : any) {
-    return api.get('/orderDetails.json', OrderId);
+export function getOrder(orderId: any) {
+    return api.get('/getOrder', {
+        params: {
+            orderId
+        }
+    });
 }

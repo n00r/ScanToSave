@@ -1,36 +1,49 @@
 import React, { useState ,useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonSpinner, IonLoading } from '@ionic/react';
+import { RouteComponentProps } from 'react-router';
+import './Tab1.css';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonLoading, IonAlert } from '@ionic/react';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { getProduct } from '../services/api';
 import * as Cart from '../services/cart';
+interface OwnProps extends RouteComponentProps {
+  // handlecount:any
+}
 
-import './Tab1.css';
 
-const Tab1: React.FC = () => {
+const Tab1: React.FC <OwnProps> = ({history}) => {
   const [loading, setLoading] = useState(false);
   const [product, setProduct] = useState();
+  const [showAlert1, setShowAlert1] = useState(false);
 
 
   const openScanner = async () => {
     const data = await BarcodeScanner.scan();
     console.log(`Barcode data: ${JSON.stringify(data)}`);
-    fetchProduct(data.text);
+    let url:any = JSON.stringify(data);
+    let extractParam = url.text.split('?')[1];
+    let qrdata = new URLSearchParams(extractParam)
+    fetchProduct(qrdata.get('proId'),qrdata.get('promoId'));
   };
   const addtocart = async () =>{
-    fetchProduct('PA1');
-
+    fetchProduct('PA02','PR02');
   }
-  const fetchProduct = (ProductId:any) => {
+  const fetchProduct = (ProductId:any,promoId:any) => {
     setLoading(true);
 
 
-    getProduct(ProductId).then((response :any) => {
+    getProduct(ProductId,promoId).then((response :any) => {
       if (response) {
         console.log(response);
+        if(response.totalQuantity == 0){
+          setShowAlert1(true);
+          return;
+        }
         // setProduct(response.products);
         Cart.addToCart(response).finally(() => {
           console.log('item added');
           Cart.getCart().then((data)=> console.log(data));
+          history.push('/cart');
+
           
       });
       }
@@ -65,7 +78,7 @@ const Tab1: React.FC = () => {
           </IonCardHeader>
           <IonCardContent>
             <IonButton onClick={openScanner} expand="block" shape="round" size="large">Scan QR</IonButton>
-            {/* <IonButton onClick={addtocart} expand="block" shape="round" size="large">Scan QR</IonButton> */}
+            {/* <IonButton onClick={addtocart} expand="block" shape="round" size="large">Get Pr</IonButton> */}
 
           </IonCardContent>
         </IonCard>
@@ -75,6 +88,14 @@ const Tab1: React.FC = () => {
         message={'Gettting Product...'}
         duration={5000}
       />
+      <IonAlert
+          isOpen={showAlert1}
+          onDidDismiss={() => setShowAlert1(false)}
+          header={'Alert'}
+          // subHeader={'Subtitle'}
+          message={'No Stock Available'}
+          buttons={['OK']}
+        />
       </IonContent>
     </IonPage>
   );

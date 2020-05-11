@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './ExploreContainer.css';
-import { IonCardContent, IonItem, IonLabel, IonIcon, IonThumbnail, IonButton, IonChip ,useIonViewWillEnter} from '@ionic/react';
-import { removeCircleOutline, addCircleOutline, trashOutline, cart } from 'ionicons/icons';
+import ProductDetailsComponent from '../components/ProductDetailsComponent';
+
+import { IonCardContent, IonItem, IonLabel, IonIcon, IonThumbnail, IonChip ,useIonViewWillEnter} from '@ionic/react';
+import { removeCircleOutline, addCircleOutline, trashOutline } from 'ionicons/icons';
 import * as Cart from '../services/cart';
 import {environment} from '../services/env';
 
@@ -15,6 +17,13 @@ interface ContainerProps {
 
 
 const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => {
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [ProductId, setProductId] = useState('');
+
+  const handleback = useCallback(() => {
+    setShowProductModal(false);
+
+  }, []);
   useIonViewWillEnter(() => {
    Cart.getCart().then((data)=> {
     setItems(data);
@@ -23,7 +32,7 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
   })
   let [items, setItems] = useState(lists);
   const handleDecrement = async(item:any)=>{
-    if(item.qty != 1){
+    if(item.qty !== 1){
       item.qty = item.qty-1;
       await Cart.setQuantity(item);
       let list=  await Cart.getCart().then((data)=> {return data})
@@ -32,12 +41,13 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
     }
   };
   const handleIncrecrement = async(item:any)=>{
+    if(item.offerQuantity  >  item.qty && item.totalQuantity > item.qty){
       item.qty = item.qty+1;
       await Cart.setQuantity(item);
       let list=  await Cart.getCart().then((data)=> {return data})
       setItems(list);
       handlecart();
-
+    }
   };
   const removeCart = async(item:any)=>{
       item.qty = item.qty+1;
@@ -47,22 +57,37 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
       handlecart();
 
   };
+  const getProduct = (Id : any)=>{
+    setProductId(Id);
+    setShowProductModal(true);
+  }
   
   return (
     <IonCardContent class="ion-no-padding">
       {items && items.map((item: any, index: number) => (
-        <IonItem key={item.productId}>
-          <IonThumbnail slot="start">
+        <IonItem key={index}>
+          <IonThumbnail slot="start" onClick={()=>getProduct(item.product_Id)}>
             <img alt="img" src={item.imageURL} />
             
           </IonThumbnail>
           
 
           <IonLabel>
-            <h3><b>{item.productName}</b></h3>
+            <h3 className="ion-text-wrap w80" onClick={()=>getProduct(item.product_Id)}><b>{item.productName}</b></h3>
             
+            {(item.offerPrice === 0 ) && 
             <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p>
-            <p>  Color: {item.productColor}  | Size: {item.productSize} </p>
+            }
+            {(item.offerPrice !== 0 ) && 
+            <p className="cred"> <b>{environment.currency}{item.offerPrice}</b> <b className="mlf">{environment.currency}{item.productPrice}</b></p>
+             } 
+
+
+            {/* <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p> */}
+            {/* <p>  Category: {item.productCategory} </p> */}
+            <p>  Brand: {item.productBrand} </p>
+            <p className="glab"> <b>Promo : {item.promoCode}</b></p>
+
             
           </IonLabel>
           <div className="fp1">
@@ -78,7 +103,12 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
           </div>
         </IonItem>
       ))}
+      {(ProductId &&
+    <ProductDetailsComponent  productModal={showProductModal} ProductId={ProductId} onback={handleback} />
+    )}
+      
     </IonCardContent>
+
   );
 };
 

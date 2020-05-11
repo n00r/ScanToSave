@@ -1,8 +1,9 @@
-import React ,{useState, useEffect}from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCardContent, IonItem, IonThumbnail, IonLabel, IonIcon, IonCard, IonCardHeader, IonFooter, IonGrid, IonRow, IonCol, IonText, IonModal, IonButtons, IonButton, IonChip, IonAlert, IonLoading, useIonViewWillEnter } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCardContent, IonItem, IonThumbnail, IonLabel, IonIcon, IonCard, IonCardHeader, IonFooter, IonGrid, IonRow, IonCol, IonText, IonModal, IonButtons, IonButton, IonChip, IonAlert, IonLoading } from '@ionic/react';
 import { arrowBack, checkmarkCircleOutline } from 'ionicons/icons';
 import { getOrder } from '../services/api';
-import {environment} from '../services/env';
+import { environment } from '../services/env';
+import * as Cart from '../services/cart';
 
 
 interface ContainerProps {
@@ -13,34 +14,46 @@ interface ContainerProps {
 }
 
 const lists: any = [
-  { "name": "MICHAEL Michael Kors", "price": "190.00", "color": "Eggplant", "size": "XS", "img": "assets/cart/3.jpeg", "quantity": "1" },
-  { "name": "Puma Men's Essential Logo Hoodie", "price": "45.00", "color": "Black", "size": "S", "img": "assets/cart/4.jpeg", "quantity": "1" },
-  { "name": "MICHAEL Michael Kors Mae Medium Tote", "price": "278.00", "color": "Bright Red/Gold", "size": "S", "img": "assets/cart/2.jpeg", "quantity": "3" },
+
 ];
-const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onhandleorderout ,onback ,handleorder }) => {
+const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onhandleorderout, onback, handleorder }) => {
   const [showAlert2, setShowAlert2] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [orderDetails,setOrderDetails] =useState();
+  const [orderDetails, setOrderDetails] = useState();
+  let [items, setItems] = useState(lists);
+  let [details, setDetails] = useState(lists);
+  var dateTimeToday = new Date(Date.now()).toLocaleDateString();
+
   useEffect(() => {
-   
-    getOrder(handleorder).then((response: any) => {
+
+  });
+  const getOrderByID = () => {
+    setLoading(true);
+
+    getOrder(handleorder.orderId).then((response: any) => {
       if (response) {
-          console.log(response);
-          // onhandleorderout(response);
-          // setProduct(response.products);
+        console.log(response);
+        setDetails(response);
+        Cart.getCart().then((data) => {
+          setItems(data);
+        });
+      setLoading(false);
+      Cart.clearCart();
+
+        // onhandleorderout(response);
+        // setProduct(response.products);
+        // Cart.clearCart();
+
 
       }
     }).finally(() => {
-        setLoading(false);
+      setLoading(false);
     });
-   });
-  const getOrderByID  = () => {
-   
-    
-   }
+
+  }
 
   return (
-    <IonModal isOpen={orderModal}>
+    <IonModal isOpen={orderModal} onDidPresent={getOrderByID}>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -58,12 +71,12 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
               <div>  <IonIcon icon={checkmarkCircleOutline} className="glab f65"></IonIcon> </div>
 
               <IonText color="danger" class="f20"><b>Thank You For Placing The Order!</b></IonText>
-              <p>{ handleorder && getOrderByID()}Below is the order details...</p>
+              <p>Below is the order details...</p>
               <IonRow>
-            <IonCol>
-              <IonButton type="submit" expand="block" color="danger" onClick={() => setShowAlert2(true)} >Share With Friends</IonButton>
-            </IonCol>
-          </IonRow>
+                <IonCol>
+                  <IonButton type="submit" expand="block" color="danger" onClick={() => setShowAlert2(true)} >Share With Friends</IonButton>
+                </IonCol>
+              </IonRow>
 
             </div>
           </IonCardContent>
@@ -84,16 +97,16 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
               </IonRow>
               <IonRow>
                 <IonCol>Order No:</IonCol>
-                <IonCol className="tar"><b>#ORD-235613</b></IonCol>
+                <IonCol className="tar"><b>#ORD-{details.orderId}</b></IonCol>
               </IonRow>
               <IonRow><IonCol>Order Date:</IonCol>
-                <IonCol className="tar"><b>05/05/2020</b></IonCol>
+                <IonCol className="tar"><b>{dateTimeToday.toString()}</b></IonCol>
               </IonRow>
               <IonRow><IonCol>No. of Items:</IonCol>
-                <IonCol className="tar"> <b>5</b> </IonCol>
+                <IonCol className="tar"> <b>{items.length}</b> </IonCol>
               </IonRow>
               <IonRow>
-                
+
               </IonRow>
             </IonGrid>
           </IonCardContent>
@@ -101,10 +114,10 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
             <IonToolbar color="">
               <IonTitle size="large">
                 <IonText >
-                <IonRow>
-                <IonCol>Total Price:</IonCol>
-                <IonCol className="tar"><b>{environment.currency}538.00</b></IonCol>
-                </IonRow>
+                  <IonRow>
+                    <IonCol>Total Price:</IonCol>
+                    <IonCol className="tar"><b>{environment.currency}{details.totalAmount}</b></IonCol>
+                  </IonRow>
                 </IonText>
               </IonTitle>
             </IonToolbar>
@@ -116,21 +129,38 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
             <IonText color="dark" class="f16 cred"> <b> Ordered Items</b> </IonText>
           </IonCardHeader>
           <IonCardContent class="ion-no-padding">
-            {lists.map((item: any,index:any) => (
+            {items && items.map((item: any, index: number) => (
               <IonItem key={index}>
-                <IonThumbnail slot="start">
-                  <img src={item.img} />
+                <IonThumbnail slot="start" >
+                  <img alt="img" src={item.imageURL} />
+
                 </IonThumbnail>
+
+
                 <IonLabel>
-                  <h3><b>{item.name}</b></h3>
-                  <p className="cred"> <b>{environment.currency}{item.price}</b></p>
-                  <p>  Color: {item.color}  | Size: {item.size} </p>
-                  <p>  Quantity: {item.quantity} </p>
+                  <h3 className="ion-text-wrap w80" ><b>{item.productName}</b></h3>
+
+                  {(item.offerPrice === 0) &&
+                    <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p>
+                  }
+                  {(item.offerPrice !== 0) &&
+                    <p className="cred"> <b>{environment.currency}{item.offerPrice}</b> <b className="mlf">{environment.currency}{item.productPrice}</b></p>
+                  }
+
+
+                  {/* <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p> */}
+                  {/* <p>  Category: {item.productCategory} </p> */}
+                  <p>  Brand: {item.productBrand} </p>
+                  <p className="glab"> <b>Promo : {item.promoCode}</b></p>
+
+
                 </IonLabel>
+
+
               </IonItem>
             ))}
           </IonCardContent>
-          
+
         </IonCard>
         <IonAlert
           isOpen={showAlert2}
@@ -161,13 +191,13 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
           ]}
         />
         <IonLoading
-        isOpen={loading}
-        onDidDismiss={() => setLoading(false)}
-        message={'Login...'}
-      />
+          isOpen={loading}
+          onDidDismiss={() => setLoading(false)}
+          message={'Login...'}
+        />
       </IonContent>
     </IonModal>
-      
+
   );
 };
 
