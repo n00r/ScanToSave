@@ -67,7 +67,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             setshippingAddressError(true);
         }
         if (!name) {
-            if (!handleuser.Name) {
+            if (!handleuser.userName) {
                 setNameError(true);
 
             }
@@ -83,7 +83,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
         //     "cart": cartItems,
         //     "totalAmount": totalAmount,
         //     "address": {
-        //         "name": name || handleuser.Name,
+        //         "name": name || handleuser.userName,
         //         "shippingAddress": shippingAddress,
         //         "zipcode": zipcode,
         //         "phone": phone,
@@ -102,7 +102,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             else {
                 price = c.productPrice
             }
-            let item = { productId: c.product_Id, productPrice: price, productQuantity: c.qty }
+            let item = { productId: c.productId, productPrice: price, productQuantity: c.qty }
             carts.push(item);
 
         })
@@ -111,7 +111,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
             "address": shippingAddress,
             "city": "city",
             "country": "country",
-            "fullName": name || handleuser.Name,
+            "fullName": name || handleuser.userName,
             // "orderId": 0 || Math.floor(Math.random() * 1000) + 1,
             "phoneNumber": phone,
             "shipProducts": carts,
@@ -246,7 +246,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
                         </IonItem>}
                         {(handleuser != 'Guest') && <IonItem>
                             <IonLabel position="stacked" color="">Name </IonLabel>
-                            <IonInput name="name" type="text" value={handleuser.Name} readonly spellCheck={false} autocapitalize="off" onIonChange={e => {
+                            <IonInput name="name" type="text" value={handleuser.userName} readonly spellCheck={false} autocapitalize="off" onIonChange={e => {
                                 setName(e.detail.value!);
                                 setNameError(false);
                             }}

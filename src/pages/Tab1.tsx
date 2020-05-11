@@ -19,19 +19,19 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
   const openScanner = async () => {
     const data = await BarcodeScanner.scan();
     console.log(`Barcode data: ${JSON.stringify(data)}`);
-    let url:any = JSON.stringify(data);
+    let url:any = data;
     let extractParam = url.text.split('?')[1];
     let qrdata = new URLSearchParams(extractParam)
     fetchProduct(qrdata.get('proId'),qrdata.get('promoId'));
   };
   const addtocart = async () =>{
-    fetchProduct('PA02','PR02');
+    fetchProduct('PA01','PR02');
   }
   const fetchProduct = (ProductId:any,promoId:any) => {
     setLoading(true);
 
 
-    getProduct(ProductId,promoId).then((response :any) => {
+    getProduct(ProductId,promoId).then(async (response :any) => {
       if (response) {
         console.log(response);
         if(response.totalQuantity == 0){
@@ -39,10 +39,11 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
           return;
         }
         // setProduct(response.products);
-        Cart.addToCart(response).finally(() => {
+       await Cart.addToCart(response).finally(async () => {
           console.log('item added');
-          Cart.getCart().then((data)=> console.log(data));
-          history.push('/cart');
+          await Cart.setOrderId();
+          await Cart.getCart().then((data)=> {console.log(data); history.push('/cart');});
+         
 
           
       });

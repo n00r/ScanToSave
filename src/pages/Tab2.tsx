@@ -52,8 +52,9 @@ const Tab2: React.FC<OwnProps> = ({history}) => {
   }, []);
   const handlecustomer = useCallback((data) => {
     setShowCustomerModal(false);
-    setShowcheckoutModal(true);
     setuser(data);
+    console.log(data)
+    setShowcheckoutModal(true);
   }, []);
   const handlecheckout = useCallback((res) => {
     setShowcheckoutModal(false);

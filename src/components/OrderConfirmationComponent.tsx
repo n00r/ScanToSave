@@ -39,6 +39,7 @@ const OrderConfirmationComponent: React.FC<ContainerProps> = ({ orderModal, onha
         });
       setLoading(false);
       Cart.clearCart();
+      Cart.removeOrderId();
 
         // onhandleorderout(response);
         // setProduct(response.products);

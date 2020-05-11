@@ -1,20 +1,20 @@
 import React,{useEffect,useState} from 'react';
 // import './ExploreContainer.css';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonItem, IonThumbnail, IonLabel, IonImg, IonFooter, IonText, IonCardHeader, IonButton, IonFabButton, IonGrid, IonRow, IonCol, IonIcon, IonSlides, IonSlide, IonModal, IonButtons, IonLoading } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardContent, IonItem, IonThumbnail, IonLabel, IonImg, IonFooter, IonText, IonCardHeader, IonButton, IonFabButton, IonGrid, IonRow, IonCol, IonIcon, IonSlides, IonSlide, IonModal, IonButtons, IonLoading, IonList } from '@ionic/react';
 import { removeCircleOutline, addCircleOutline, arrowForwardOutline, arrowBack } from 'ionicons/icons';
 import { getProduct } from '../services/api';
+import {environment} from '../services/env';
 
 interface ContainerProps {
     productModal: any;
     onback: any;
-    ProductId: any;
+    Product: any;
 }
-const item: any = {
-    "name": "MICHAEL Michael Kors Moto jacket Leather", "price": "$190.00", "color": "Brown", "size": "XS", "img": "assets/cart/3.jpeg", "quantity": "1", "desc": "The timeless bomber jacket gets a modern update in lightweight scuba nylon. A tonal rubberized logo and glossed trim lend sporty appeal, while zipped pockets along the side and long sleeve offer a functional finish.",
-    "category": "Men", "brand": "MICHAEL Michael Kors", "type": "Formal", "others": " Dry clean by leather professional"
-};
-const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,ProductId,onback }) => {
+const itemm: any = {}
+    
+const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Product,onback }) => {
   const [loading, setLoading] = useState(false);
+  const [item, setItem] = useState(itemm);
 
     // useEffect(() => {
     //     // fetchProduct();
@@ -30,15 +30,16 @@ const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Produc
     //   }, []);
     const getProd = () =>{
         // fetchProduct();
-        setLoading(true);
-        getProduct(ProductId).then((response :any) => {
-            if (response) {
-              console.log(response);
+              setItem(Product);
+              setLoading(true);
+        // getProduct(Product).then((response :any) => {
+        //     if (response) {
+        //       console.log(response);
            
-            }
-          }).finally(() => {
-            setLoading(false);
-          });
+        //     }
+        //   }).finally(() => {
+        //     setLoading(false);
+        //   });
       }
     return (
         <IonModal isOpen={productModal} onDidPresent={getProd}>
@@ -53,8 +54,8 @@ const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Produc
                 </IonToolbar>
             </IonHeader>
             <IonContent>
-                <IonCard class="card-effect">
-                    <IonImg src={item.img} class="img-size" />
+                <IonList className="ion-padding">
+                    <IonImg src={item.imageURL} class="img-size" />
                     {/* <IonSlides pager>
                         <IonSlide >
                         <IonImg src={item.img} class="img-size" />
@@ -66,14 +67,26 @@ const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Produc
                         <IonImg src={item.img} class="img-size" />
                         </IonSlide>
                     </IonSlides> */}
-                    <div className="ion-text-center f16">
-                        {item.name}
-                    </div>
-                    <div className="ion-text-center f16 cred">Price:
-                        {item.price}
-                    </div>
+                    <IonLabel>
+            <h3 className="ion-text-wrap" onClick={()=>getProduct(item)}><b>{item.productName}</b></h3>
+            
+            {(item.offerPrice === 0 ) && 
+            <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p>
+            }
+            {(item.offerPrice !== 0 ) && 
+            <p className="cred"> <b>{environment.currency}{item.offerPrice}</b> <b className="mlf">{environment.currency}{item.productPrice}</b></p>
+             } 
+
+
+            {/* <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p> */}
+            {/* <p>  Category: {item.productCategory} </p> */}
+     
+            
+          </IonLabel>
                     {/* <IonText class="ion-text-wrap">{item.desc}</IonText> */}
-                </IonCard>
+                </IonList>
+                <div className="divider"></div>
+{/* 
                 <IonCard class="card-effect">
                     <IonCardHeader>
                         <b className="f16 label">Color:</b>  {item.color}
@@ -96,39 +109,67 @@ const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Produc
                     <IonCardHeader>
                         <b className="f16 label">Delivery By:</b><IonText> Fri May 8</IonText>
                     </IonCardHeader>
-                </IonCard>
-                <IonCard class="card-effect">
+                </IonCard> */}
+                <IonList >
                     <IonCardHeader>
                         <b className="f16 label">Specification:</b>
                     </IonCardHeader>
-                    <IonCardContent>{item.specifications}</IonCardContent>
+                    {/* <IonCardContent> <b> {item.specifications} </b></IonCardContent> */}
                     <IonGrid>
                         <IonRow>
-                            <IonCol class="label">• Category: </IonCol>
-                            <IonCol>{item.category} </IonCol>
+                            <IonCol class="label" size="4" > Category: </IonCol>
+                            <IonCol> <b> {item.productCategory} </b> </IonCol>
+                        </IonRow>
+                        <IonRow >
+                            <IonCol class="label" size="4" > Brand: </IonCol>
+                            <IonCol> <b> {item.productBrand} </b> </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol class="label">• Brand: </IonCol>
-                            <IonCol>{item.brand} </IonCol>
+                            <IonCol class="label" size="4"> Size: </IonCol>
+                            <IonCol> <b> {item.productSize} </b> </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol class="label">• Type: </IonCol>
-                            <IonCol>{item.type} </IonCol>
+                            <IonCol class="label" size="4"> Color: </IonCol>
+                            <IonCol> <b> {item.productColor} </b> </IonCol>
                         </IonRow>
                         <IonRow>
-                            <IonCol class="label">• Others: </IonCol>
-                            <IonCol>{item.others} </IonCol>
+                            <IonCol class="label" size="4"> Others: </IonCol>
+                            <IonCol> <b> {item.others} </b> </IonCol>
                         </IonRow>
                     </IonGrid>
-                </IonCard>
-                <IonCard class="card-effect">
+                </IonList>
+                <div className="divider"></div>
+                <IonList >
+                    <IonCardHeader>
+                        <b className="f16 label">Promo Details:</b>
+                    </IonCardHeader>
+                    {/* <IonCardContent> <b> {item.specifications} </b></IonCardContent> */}
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol class="label" size="4" > Promo Code: </IonCol>
+                            <IonCol className="glab"> <b> {item.promoCode} </b> </IonCol>
+                        </IonRow>
+                        <IonRow >
+                            <IonCol class="label" size="4" > Promo Description: </IonCol>
+                            <IonCol> <b> {item.promoDesciption} </b> </IonCol>
+                        </IonRow>
+                        <IonRow>
+                            <IonCol class="label" size="4"> Promo Details: </IonCol>
+                            <IonCol> <b> {item.promotionDetails} </b> </IonCol>
+                        </IonRow>
+                      
+                    </IonGrid>
+                </IonList>
+                <div className="divider"></div>
+
+                <IonList>
                     <IonCardHeader>
                         <b className="f16 label">Description:</b>
                     </IonCardHeader>
                     <IonCardContent>
-                        {item.desc}
+                        {item.productDescription}
                     </IonCardContent>
-                </IonCard>
+                </IonList>
             </IonContent>
             <IonFooter>
                 <IonToolbar>
@@ -150,7 +191,7 @@ const ProductDetailsComponent: React.FC<ContainerProps> = ({ productModal,Produc
         isOpen={loading}
         onDidDismiss={() => setLoading(false)}
         message={'Gettting Product...'}
-        duration={5000}
+        duration={500}
       />
         </IonModal>
     );

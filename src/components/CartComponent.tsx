@@ -18,7 +18,7 @@ interface ContainerProps {
 
 const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => {
   const [showProductModal, setShowProductModal] = useState(false);
-  const [ProductId, setProductId] = useState('');
+  const [Product, setProduct] = useState('');
 
   const handleback = useCallback(() => {
     setShowProductModal(false);
@@ -57,8 +57,8 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
       handlecart();
 
   };
-  const getProduct = (Id : any)=>{
-    setProductId(Id);
+  const getProduct = (data : any)=>{
+    setProduct(data);
     setShowProductModal(true);
   }
   
@@ -66,14 +66,14 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
     <IonCardContent class="ion-no-padding">
       {items && items.map((item: any, index: number) => (
         <IonItem key={index}>
-          <IonThumbnail slot="start" onClick={()=>getProduct(item.product_Id)}>
+          <IonThumbnail slot="start" onClick={()=>getProduct(item)}>
             <img alt="img" src={item.imageURL} />
             
           </IonThumbnail>
           
 
           <IonLabel>
-            <h3 className="ion-text-wrap w80" onClick={()=>getProduct(item.product_Id)}><b>{item.productName}</b></h3>
+            <h3 className="ion-text-wrap w80" onClick={()=>getProduct(item)}><b>{item.productName}</b></h3>
             
             {(item.offerPrice === 0 ) && 
             <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p>
@@ -86,7 +86,7 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
             {/* <p className="cred"> <b>{environment.currency}{item.productPrice}</b></p> */}
             {/* <p>  Category: {item.productCategory} </p> */}
             <p>  Brand: {item.productBrand} </p>
-            <p className="glab"> <b>Promo : {item.promoCode}</b></p>
+            {item.promoCode &&  <p className="glab"> <b>Promo : {item.promoCode}</b></p>}
 
             
           </IonLabel>
@@ -103,8 +103,8 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
           </div>
         </IonItem>
       ))}
-      {(ProductId &&
-    <ProductDetailsComponent  productModal={showProductModal} ProductId={ProductId} onback={handleback} />
+      {(Product &&
+    <ProductDetailsComponent  productModal={showProductModal} Product={Product} onback={handleback} />
     )}
       
     </IonCardContent>
