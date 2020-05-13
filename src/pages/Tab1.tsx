@@ -25,7 +25,7 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
     fetchProduct(qrdata.get('proId'),qrdata.get('promoId'));
   };
   const addtocart = async () =>{
-    fetchProduct('PA01','PR02');
+    fetchProduct('PA02','PR02');
   }
   const fetchProduct = (ProductId:any,promoId:any) => {
     setLoading(true);
@@ -42,7 +42,8 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
        await Cart.addToCart(response).finally(async () => {
           console.log('item added');
           await Cart.setOrderId();
-          await Cart.getCart().then((data)=> {console.log(data); history.push('/cart');});
+          await Cart.getCart().then((data)=> {console.log(data);
+             history.push('/cart');});
          
 
           
@@ -60,13 +61,13 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="danger">
-          <IonTitle>SCAN TO SAVE</IonTitle>
+          <IonTitle>One Click Purchase</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonHeader collapse="condense">
           <IonToolbar color="danger">
-            <IonTitle size="large">SCAN TO SAVE</IonTitle>
+            <IonTitle size="large">One Click Purchase</IonTitle>
           </IonToolbar>
         </IonHeader>
 

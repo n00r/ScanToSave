@@ -31,7 +31,7 @@ const Tab2: React.FC<OwnProps> = ({history}) => {
       SetTotalAmount(data);
       
     });
-    // setShowOrderModal(true);
+    setShowcheckoutModal(true);
 
   });
  
@@ -73,6 +73,13 @@ const Tab2: React.FC<OwnProps> = ({history}) => {
     setShowCustomerModal(false);
     setShowcheckoutModal(false);
     setShowOrderModal(false);
+  }, []);
+  const handleback1 = useCallback(async () => {
+   await Cart.clearCart();
+
+    history.push('/scan');
+    setShowcheckoutModal(false);
+
   }, []);
   const handlecart = useCallback(() => {
     // handlecount('1')
@@ -151,13 +158,13 @@ const Tab2: React.FC<OwnProps> = ({history}) => {
             }
           ]}
         />
-        {(lists) && (
+        {/* {(lists) && (
           <CartComponent name="cart" lists={lists} handlecart={handlecart} />
-        )}
+        )} */}
         {/* <GuestComponent GuestModal={showGuestModal} onhandleguest={handleguest} /> */}
         <CustomerComponent CustomerModal={showCustomerModal} onhandlecustomer={handlecustomer} onback={handleback} />
         
-        <CheckoutComponent CheckoutModal={showCheckoutModal} onhandlecheckout={handlecheckout} onback={handleback} handleuser={user} />
+        <CheckoutComponent CheckoutModal={showCheckoutModal} onhandlecheckout={handlecheckout} onback={handleback1} handleuser={user} />
         {(order) && (
         <OrderConfirmationComponent orderModal={showOrderModal} onhandleorderout={handleorders} onback={handleback} handleorder={order} />
 

@@ -19,18 +19,19 @@ interface ContainerProps {
 const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => {
   const [showProductModal, setShowProductModal] = useState(false);
   const [Product, setProduct] = useState('');
+  let [items, setItems] = useState(lists);
 
   const handleback = useCallback(() => {
     setShowProductModal(false);
 
   }, []);
-  useIonViewWillEnter(() => {
-   Cart.getCart().then((data)=> {
+  useIonViewWillEnter(async () => {
+  await Cart.getCart().then((data)=> {
     setItems(data);
+    console.log(items)
    })
    
   })
-  let [items, setItems] = useState(lists);
   const handleDecrement = async(item:any)=>{
     if(item.qty !== 1){
       item.qty = item.qty-1;
@@ -64,6 +65,7 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
   
   return (
     <IonCardContent class="ion-no-padding">
+      {/* <h3>sss</h3> */}
       {items && items.map((item: any, index: number) => (
         <IonItem key={index}>
           <IonThumbnail slot="start" onClick={()=>getProduct(item)}>
@@ -96,10 +98,10 @@ const CartComponent: React.FC<ContainerProps> = ({ name, lists ,handlecart}) => 
             <IonIcon icon={addCircleOutline} slot="end" class="ms2"  onClick={()=>handleIncrecrement(item)}></IonIcon>
           </div>
           <div className="fp2">
-          <IonChip color="danger"  onClick={()=>removeCart(item)}>
+          {/* <IonChip color="danger"  onClick={()=>removeCart(item)}>
             <IonIcon icon={trashOutline} slot="icon-only" class="cred" ></IonIcon>
             Remove
-          </IonChip>
+          </IonChip> */}
           </div>
         </IonItem>
       ))}

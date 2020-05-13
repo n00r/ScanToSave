@@ -5,6 +5,7 @@ import * as Cart from '../services/cart';
 import { postOrder } from '../services/api';
 import { environment } from '../services/env';
 import { RouteComponentProps } from 'react-router';
+import CartComponent from './CartComponent';
 
 // import './ExploreContainer.css';
 
@@ -12,7 +13,7 @@ interface ContainerProps {
     CheckoutModal: any;
     onhandlecheckout: any;
     onback: any;
-    handleuser: any
+    handleuser: any 
 }
 
 const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlecheckout, onback, handleuser }) => {
@@ -45,16 +46,16 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
     //     });
 
     // })
-    const gettotal = () => {
-        Cart.getTotalItems().then((data: any) => {
+    const gettotal = async () => {
+        await Cart.getTotalItems().then((data: any) => {
             SetTotalItems(data);
         });
-        Cart.getTotal().then((data: any) => {
+        await  Cart.getTotal().then((data: any) => {
             SetTotalAmount(data);
         });
-        Cart.getCart().then((data) => {
-            // setCartItems();
-            cartItems = data;
+        await Cart.getCart().then((data) => {
+            setCartItems(data);
+            // cartItems = data;
 
         })
 
@@ -143,7 +144,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
         }
     };
     return (
-        <IonModal isOpen={CheckoutModal}>
+        <IonModal isOpen={CheckoutModal} onDidPresent={gettotal} >
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
@@ -160,6 +161,10 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
                 {/* <div className="login-logo">
         <IonIcon icon={lockOpenOutline} class="f58"></IonIcon>
       </div> */}
+      {(cartItems) && (
+          <CartComponent name="cart" lists={cartItems} handlecart={gettotal} />
+
+      )}
 
                 <IonGrid className="ion-padding checkp">
                     <IonRow className="pb4">
@@ -169,7 +174,7 @@ const CheckoutComponent: React.FC<ContainerProps> = ({ CheckoutModal, onhandlech
                     </IonRow>
                     <IonRow>
                         <IonCol>
-                            <p className="ion-no-botton-margin f15">Item Total {gettotal()} ({totalItems} items)</p>
+                            <p className="ion-no-botton-margin f15">Item Total ({totalItems} items)</p>
                         </IonCol>
                         <IonCol>
                             <p className="ion-no-botton-margin tar f15">{environment.currency}{totalAmount}</p>

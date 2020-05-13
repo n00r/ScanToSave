@@ -53,12 +53,12 @@ const App: React.FC = () => (
             <IonIcon icon={qrCodeOutline} />
             <IonLabel>SCAN</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="cart" href="/cart">
+          {/* <IonTabButton tab="cart" href="/cart">
             <IonIcon icon={cartOutline} />
             <IonLabel>CART     
-              {/* <IonBadge class="ms1" color="danger">4</IonBadge> */}
+              <IonBadge class="ms1" color="danger">4</IonBadge>
             </IonLabel>
-          </IonTabButton>
+          </IonTabButton> */}
           {/* <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={square} />
             <IonLabel>Tab 3</IonLabel>
