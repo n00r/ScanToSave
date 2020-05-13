@@ -131,10 +131,10 @@ const Tab2: React.FC<OwnProps> = ({history}) => {
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           header={'Confirm'}
-          message={'Checkout as a guest or Returning Customer'}
+          message={'Checkout as a guest or Returning Customer <br> <span class="cred">* benefits adding for existing user</span>'}
           buttons={[
             {
-              text: 'Returning customer',
+              text: 'Existing customer',
               handler: blah => {
                 console.log('customer');
                 setShowCustomerModal(true);

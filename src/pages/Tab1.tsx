@@ -25,7 +25,7 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
     fetchProduct(qrdata.get('proId'),qrdata.get('promoId'));
   };
   const addtocart = async () =>{
-    fetchProduct('PA01','PR02');
+    fetchProduct('PA02','PR02');
   }
   const fetchProduct = (ProductId:any,promoId:any) => {
     setLoading(true);
