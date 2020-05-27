@@ -60,7 +60,7 @@ const Tab1: React.FC <OwnProps> = ({history}) => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="danger">
-          <IonTitle>SCAN TO SAVE</IonTitle>
+          <IonTitle>LIKE IT, BUY IT</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
